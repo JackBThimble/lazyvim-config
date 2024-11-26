@@ -1,6 +1,41 @@
 return {
   {
     "rebelot/kanagawa.nvim",
+    config = function()
+      require("kanagawa").setup({
+        compile = false,
+        undercurl = true,
+        commentStyle = { italic = true },
+        functionStyle = { bold = true, underline = true, italic = true },
+        keywordStyle = { italic = true, underline = true },
+        statementStyle = { bold = true },
+        typeStyle = { italic = true, bold = true },
+        transparent = false,
+        dimInactive = true,
+        terminalColors = false,
+        overrides = function(colors)
+          local theme = colors.theme
+          return {
+            NormalFloat = { bg = "none" },
+            FloatBorder = { bg = "none" },
+            FloatTitle = { bg = "none" },
+            NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
+            LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+            Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
+            PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+            PmenuSbar = { bg = theme.ui.bg_m1 },
+            PmenuThumb = { bg = theme.ui.bg_p2 },
+            TelescopeTitle = { fg = theme.ui.special, bold = true },
+            TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+            TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+            TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+            TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+            TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+            TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+          }
+        end,
+      })
+    end,
   },
   -- Configure LazyVim to load gruvbox
   {
@@ -28,85 +63,9 @@ return {
     opts = {
       servers = {
         zls = {
-          cmd = { "/home/jake/.zvm/bin/zls" },
+          cmd = { "/usr/bin/zls" },
         },
       },
-    },
-  },
-
-  {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    lazy = true,
-    cmd = { "ToggleTerm" },
-    keys = {
-      {
-        "<leader>tf",
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, 0, LazyVim.root.get(), "float")
-        end,
-        desc = "ToggleTerm (float root_dir)",
-      },
-      {
-        "<leader>th",
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, 15, LazyVim.root.get(), "horizontal")
-        end,
-        desc = "ToggleTerm (horizontal root_dir)",
-      },
-      {
-        "<leader>tv",
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, vim.o.columns * 0.4, LazyVim.root.get(), "vertical")
-        end,
-        desc = "ToggleTerm (vertical root_dir)",
-      },
-      {
-        "<leader>tn",
-        "<cmd>ToggleTermSetName<cr>",
-        desc = "Set term name",
-      },
-      {
-        "<leader>ts",
-        "<cmd>TermSelect<cr>",
-        desc = "Select term",
-      },
-      {
-        "<leader>tt",
-        function()
-          require("toggleterm").toggle(1, 100, LazyVim.root.get(), "tab")
-        end,
-        desc = "ToggleTerm (tab root_dir)",
-      },
-      {
-        [[<c-\>]],
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, 15, LazyVim.root.get(), "horizontal")
-        end,
-      },
-    },
-    opts = {
-      size = function(term)
-        if term.direction == "horizontal" then
-          return 15
-        elseif term.direction == "vertical" then
-          return vim.o.columns * 0.4
-        end
-      end,
-      open_mapping = [[<c-\]],
-      hide_numbers = true,
-      shade_filetypes = {},
-      shade_terminals = true,
-      start_in_insert = true,
-      insert_mappings = true,
-      terminal_mappings = true,
-      persist_size = true,
-      direction = "horizontal",
-      close_on_exit = true,
     },
   },
   {
